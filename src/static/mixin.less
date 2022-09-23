@@ -1,0 +1,50 @@
+// flex
+.flex_init(@dir: column, @jc: center, @ai: center) {
+  display: flex;
+  flex-direction: @dir;
+  justify-content: @jc;
+  align-items: @ai;
+}
+
+//缩放
+.scale(@scale-rate: 1, @scale-x-rate: 1, @scale-y-rate: 1) {
+  transform: scale(@scale-rate) scaleX(@scale-x-rate) scaleY(@scale-y-rate);
+}
+
+//偏移
+.offset-x(@offset-type: none, @offset-left-value: 0, @offset-right-value: 0) {
+  position: @offset-type;
+  left: @offset-left-value;
+  right: @offset-right-value;
+}
+
+.offset-y(@offset-type: none, @offset-top-value: 0, @offset-bottom-value: 0) {
+  position: @offset-type;
+  left: @offset-top-value;
+  right: @offset-bottom-value;
+}
+
+//字体
+.letter(@color: black, @font-size: 16px, @font-weight: 400, @letter-spacing: 0px) {
+  color: @color;
+  font-size: @font-size;
+  font-weight: @font-weight;
+  letter-spacing: @letter-spacing;
+}
+
+//省略号
+.ellipsis(@rowCount: 1) when(@rowCount <=1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+}
+
+.ellipsis(@rowCount: 1) when(@rowCount >1) {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: @rowCount;
+  -webkit-box-orient: vertical;
+}
