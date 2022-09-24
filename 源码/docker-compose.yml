@@ -1,0 +1,8 @@
+version: '1'
+services:
+  renren-fast:
+    image: smallbell/fatigue
+    ports:
+      - "8089:8089"
+    environment:
+      - spring.profiles.active=dev

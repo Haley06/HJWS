@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.MessageDao">
+<!--    <select id="selectBYPrimaryKey" parameterType="java.lang.Long" resultType="com.smallbell.modules.app.entity.UserEntity">-->
+<!--        select user_id as userId, username,avatar_url as avatarUrl, mobile, password, create_time as createTime-->
+<!--        from tb_user-->
+<!--        where user_id = #{id}-->
+<!--    </select>-->
+
+    <insert id="insertSelective" parameterType="com.smallbell.modules.app.entity.MessageEntity"  useGeneratedKeys="true" keyProperty="id">
+        insert into message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="sendId != null">
+                send_id,
+            </if>
+            <if test="acceptId != null">
+                accept_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="sendId != null">
+                #{sendId},
+            </if>
+            <if test="acceptId != null">
+                #{acceptId},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="createTime != null">
+                #{createTime}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectBySenderAndAccepter" resultType="com.smallbell.modules.app.entity.MessageEntity">
+        select id, send_id as sendId, content, accept_id as acceptId, type, create_time as createTime
+        from message
+        where send_id=#{sendId} and accept_id=#{acceptId}
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.smallbell.modules.app.entity.MessageEntity">
+        update message
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="sendId != null">
+                send_id = #{sendId},
+            </if>
+            <if test="acceptId != null">
+                accept_id = #{acceptId},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="com.smallbell.modules.app.entity.UserEntity">
+        select user_id as userId, username,avatar_url as avatarUrl, mobile, password, create_time as createTime from tb_user where user_id = #{userId}
+    </select>
+
+    <select id="getSenderByUserId" resultType="com.smallbell.modules.app.entity.MessageEntity">
+        select id, send_id as sendId, content, accept_id as acceptId, type, create_time as createTime
+        from message
+        where accept_id = #{userId}
+    </select>
+
+    <select id="getAccepterByUserId" resultType="com.smallbell.modules.app.entity.MessageEntity">
+        select id, send_id as sendId, content, accept_id as acceptId, type, create_time as createTime
+        from message
+        where send_id = #{userId}
+    </select>
+
+    <select id="getNewestMessage" parameterType="com.smallbell.modules.app.form.message.SenderIdAndAccepterIdPo" resultType="com.smallbell.modules.app.entity.MessageEntity">
+        select id, send_id as sendId, content, accept_id as acceptId, type, create_time as createTime
+        from message
+        where (send_id=#{senderId} and accept_id=#{accepterId}) or (send_id=#{accepterId} and accept_id=#{senderId})
+        order by create_time desc
+        limit 1
+    </select>
+</mapper>

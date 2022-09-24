@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.TextDao">
+
+    <insert id="addText" parameterType="com.smallbell.modules.app.entity.PortsEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into posts
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="description != null">
+                `description`,
+            </if>
+            <if test="favoriteNumber != null">
+                favorite_number,
+            </if>
+            <if test="commonNumber != null">
+                common_number,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="favoriteNumber != null">
+                #{favoriteNumber},
+            </if>
+            <if test="commonNumber != null">
+                #{commonNumber},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+
+        </trim>
+    </insert>
+
+    <delete id="deleteText" parameterType="int">
+        delete from posts where id = #{id}
+    </delete>
+
+    <select id="infoText" resultType="com.smallbell.modules.app.result.GetTextResult" parameterType="int">
+        select id,posts.user_id as userId,common_number as commonNumber,tb_user.avatar_url as avatarUrl,tb_user.username as username,
+               favorite_number as favoriteNumber,description,posts.create_time as createTime from posts INNER JOIN tb_user
+                on posts.user_id = tb_user.user_id where id = #{id};
+    </select>
+
+    <update id="updateText" parameterType="com.smallbell.modules.app.entity.PortsEntity">
+        update posts
+        <set>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="favoriteNumber != null">
+                favorite_number = #{favoriteNumber},
+            </if>
+            <if test="commonNumber != null">
+                common_number = #{commonNumber},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getAll" resultType="com.smallbell.modules.app.result.GetTextResult">
+        select posts.id,tb_user.user_id as userId,tb_user.avatar_url as avatarUrl,common_number as commonNumber,tb_user.username,
+               favorite_number as favoriteNumber,description,posts.create_time as createTime from posts left join tb_user on
+            posts.user_id = tb_user.user_id;
+    </select>
+
+    <select id="getByUser" resultType="com.smallbell.modules.app.result.GetTextResult">
+        select posts.id,tb_user.user_id as userId,tb_user.avatar_url as avatarUrl,common_number as commonNumber,tb_user.username,
+               favorite_number as favoriteNumber,description,posts.create_time as createTime from posts left join tb_user on
+            posts.user_id = tb_user.user_id where posts.user_id = #{userId};
+    </select>
+
+    <select id="selectByPrimaryKey" resultType="com.smallbell.modules.app.entity.PortsEntity">
+        select id,common_number as commonNumber,user_id as userId,
+               favorite_number as favoriteNumber,description,posts.create_time as createTime from posts where id = #{id}
+    </select>
+
+</mapper>

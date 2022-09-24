@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.MonitoredDao">
+
+    <select id="selectByPhone" resultType="com.smallbell.modules.app.form.monitor.UserPhoneResult">
+        select user_id as userId, tb_user.username,avatar_url as avatarUrl,tui.introduction from tb_user left join tb_user_info tui on tb_user.mobile = tui.mobile
+        where tb_user.mobile like concat('%',#{phone},'%')
+    </select>
+
+    <insert id="insertMonitred" parameterType="com.smallbell.modules.app.entity.MonitoreEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into monitore
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="monitoredId != null">
+                monitored_id,
+            </if>
+            <if test="sendId != null">
+                send_id,
+            </if>
+            <if test="isAccepted != null">
+                is_accepted,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="monitoredId != null">
+                #{monitoredId},
+            </if>
+            <if test="sendId != null">
+                #{sendId},
+            </if>
+            <if test="isAccepted != null">
+                #{isAccepted},
+            </if>
+            <if test="createTime != null">
+                #{createTime}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateMonitored" parameterType="com.smallbell.modules.app.entity.MonitoreEntity">
+        update monitore
+        <set>
+            <if test="sendId != null">
+                send_id = #{sendId},
+            </if>
+            <if test="monitoredId != null">
+                monitored_id = #{monitoredId},
+            </if>
+            <if test="isAccepted != null">
+                is_accepted = #{isAccepted},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="isAllowed != null">
+                is_allowed = #{isAllowed},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectUser" resultType="com.smallbell.modules.app.form.monitor.UserMonitoreResult">
+        select m.id, m.send_id as sendId, m.monitored_id as monitoredId, m.create_time as createTime,
+               t.username,t.avatar_url as avatarUrl from monitore as m  inner join tb_user as t on m.monitored_id = t.user_id where m.send_id = #{userId} and m.is_accepted = 0
+    </select>
+
+    <select id="selectByUserId" resultType="com.smallbell.modules.app.form.monitor.UserDrivenResult">
+        select m.id, m.send_id as userId, m.monitored_id as monitoredId, t.status,t.abnormal_time as abnormalTime,
+               t.username,t.avatar_url as avatarUrl,t.driven_time as drivenTime
+        from monitore as m inner join tb_user as t on m.monitored_id = t.user_id where m.send_id = #{userId} and m.is_accepted = 0 order by t.status desc;
+    </select>
+
+    <select id="userAccepted" resultType="integer" parameterType="integer">
+        select is_accepted from monitore where id = #{id}
+    </select>
+
+    <update id="updateByUserId" parameterType="com.smallbell.modules.app.entity.UserEntity">
+        update tb_user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                `password` = #{password},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="avatarUrl != null">
+                avatar_url = #{avatarUrl},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="abnormalTime != null">
+                abnormal_time = #{abnormalTime},
+            </if>
+            <if test="drivenTime != null">
+                driven_time = #{abnormalTime},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.ResultDao">
+    <insert id="setAlcohol" parameterType="com.smallbell.modules.app.entity.AlcoholEntity">
+        insert into alcohol
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="createTime != null">
+                #{createTime}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectAlcohol" parameterType="long" resultType="integer">
+        select count(*) from alcohol where user_id = #{userId} and create_time &lt;= #{end} and create_time &gt;= #{start}
+    </select>
+
+    <select id="selectLookAhead" parameterType="com.smallbell.modules.app.form.result.LookAheadVo" resultType="integer">
+        select count(*) from look_ahead
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="start != null">
+                and `timestamp` &gt;= #{start}
+            </if>
+            <if test="end != null">
+                and `timestamp` &lt;= #{end}
+            </if>
+        </where>
+    </select>
+
+    <select id="getMood" parameterType="com.smallbell.modules.app.form.result.MoodVo" resultType="integer">
+        select count(*) from mood
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="feeling != null">
+                and feeling = #{feeling}
+            </if>
+            <if test="start != null">
+                and `timestamp` &gt;= #{start}
+            </if>
+            <if test="end != null">
+                and `timestamp` &lt;= #{end}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllAlcohol" parameterType="long" resultType="integer">
+        select count(*) from alcohol where user_id = #{userId}
+    </select>
+
+    <select id="isAllowed" parameterType="long" resultType="integer">
+        select is_allowed from monitore where monitored_id = #{userId}
+    </select>
+
+    <insert id="setMood" parameterType="com.smallbell.modules.app.entity.MoodEntity">
+        insert into mood
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="feeling != null">
+                feeling,
+            </if>
+            <if test="timestamp != null">
+                `timestamp`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="feeling != null">
+                #{feeling},
+            </if>
+            <if test="timestamp != null">
+                #{timestamp},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="setLookAhead" parameterType="com.smallbell.modules.app.entity.LookAheadEntity">
+        insert into look_ahead
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="timestamp != null">
+                `timestamp`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="timestamp != null">
+                #{timestamp},
+            </if>
+        </trim>
+    </insert>
+</mapper>

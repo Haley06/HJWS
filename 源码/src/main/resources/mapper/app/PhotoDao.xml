@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.PhotoDao">
+
+    <update id="updatePhoto">
+        update tb_user set avatar_url = #{s} where user_id = #{id}
+    </update>
+</mapper>

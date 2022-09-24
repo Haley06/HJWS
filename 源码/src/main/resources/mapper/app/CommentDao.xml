@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.CommentDao">
+
+    <sql id="Base_Column_List">
+        id, user_id as userId, father_id as fatherId, favorite_number as favoriteNumber, comment_number as commentNumber, posts_id as postsId, comment_body as commentBody,
+    comment_time as commentTime, is_deleted as isdeleted
+    </sql>
+    <insert id="insertSelective" parameterType="com.smallbell.modules.app.entity.CommentEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into common
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="fatherId != null">
+                father_id,
+            </if>
+            <if test="favoriteNumber != null">
+                favorite_number,
+            </if>
+            <if test="commentNumber != null">
+                comment_number,
+            </if>
+            <if test="postsId != null">
+                posts_id,
+            </if>
+            <if test="commentBody != null">
+                comment_body,
+            </if>
+            <if test="commentTime != null">
+                comment_time,
+            </if>
+            <if test="isDeleted != null">
+                is_deleted,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="fatherId != null">
+                #{fatherId},
+            </if>
+            <if test="favoriteNumber != null">
+                #{favoriteNumber},
+            </if>
+            <if test="commentNumber != null">
+                #{commentNumber},
+            </if>
+            <if test="postsId != null">
+                #{postsId},
+            </if>
+            <if test="commentBody != null">
+                #{commentBody},
+            </if>
+            <if test="commentTime != null">
+                #{commentTime},
+            </if>
+            <if test="isDeleted != null">
+                #{isDeleted},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectByPrimaryKey" resultType="com.smallbell.modules.app.entity.CommentEntity">
+        select
+        <include refid="Base_Column_List" />
+        from common
+        where id = #{id} and is_deleted = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="integer">
+        delete from common where id = #{id}
+    </delete>
+
+    <select id="selectByUserId" parameterType="long" resultType="com.smallbell.modules.app.entity.CommentEntity">
+        select
+        <include refid="Base_Column_List" />
+        from common
+        where user_id = #{userId} and is_deleted = 0 order by comment_time desc
+    </select>
+
+    <select id="selectByRecordId" parameterType="integer" resultType="com.smallbell.modules.app.entity.CommentEntity">
+        select
+        <include refid="Base_Column_List" />
+        from common
+        where posts_id=#{recordId}
+        order by comment_time desc, favorite_number desc
+    </select>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.smallbell.modules.app.entity.CommentEntity">
+        update common
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="fatherId != null">
+                father_id = #{fatherId},
+            </if>
+            <if test="favoriteNumber != null">
+                favorite_number = #{favoriteNumber},
+            </if>
+            <if test="commentNumber != null">
+                comment_number = #{commentNumber},
+            </if>
+            <if test="postsId != null">
+                posts_id = #{postsId},
+            </if>
+            <if test="commentBody != null">
+                comment_body = #{commentBody},
+            </if>
+            <if test="commentTime != null">
+                comment_time = #{commentTime},
+            </if>
+            <if test="isDeleted != null">
+                is_deleted = #{isDeleted},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectByFatherId" resultType="com.smallbell.modules.app.entity.CommentEntity">
+        select
+        <include refid="Base_Column_List" />
+        from common
+        where father_id=#{fatherId} and is_deleted = 0
+        order by comment_time desc, favorite_number desc
+    </select>
+</mapper>

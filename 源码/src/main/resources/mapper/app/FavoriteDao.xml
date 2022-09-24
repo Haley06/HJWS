@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.FavoriteDao">
+    <sql id="Base_Column_List">
+        id, user_id as userId, remark, type_id as typeId
+    </sql>
+    <select id="selectByUserIdAndCommentId" parameterType="com.smallbell.modules.app.form.comment.UserIdAndCommentIdPo"
+            resultType="com.smallbell.modules.app.entity.FavoriteEntity">
+        select
+        <include refid="Base_Column_List" />
+        from favorite
+        where user_id=#{userId} and type_id=1 and remark = #{commentId}
+    </select>
+
+    <select id="selectByUserIdAndRecordId" parameterType="com.smallbell.modules.app.form.favorite.UserIdAndRecordIdPo"
+            resultType="com.smallbell.modules.app.entity.FavoriteEntity">
+        select
+        <include refid="Base_Column_List" />
+        from favorite
+        where user_id=#{userId} and type_id=0 and remark = #{recordId}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.smallbell.modules.app.entity.FavoriteEntity">
+        insert into favorite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="typeId != null">
+                type_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="typeId != null">
+                #{typeId},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="integer">
+        delete from favorite
+        where id = #{id}
+    </delete>
+
+    <select id="selectByUserIdAndProductId" parameterType="com.smallbell.modules.app.form.shop.UserIdAndProductIdPo"
+            resultType="com.smallbell.modules.app.entity.FavoriteEntity">
+        select
+        <include refid="Base_Column_List" />
+        from favorite
+        where user_id=#{userId} and type_id=2 and remark = #{productId}
+    </select>
+
+    <select id="selectIsCollection" parameterType="com.smallbell.modules.app.form.shop.UserIdAndProductIdPo"
+            resultType="com.smallbell.modules.app.entity.FavoriteEntity">
+        select
+        <include refid="Base_Column_List" />
+        from favorite
+        where user_id=#{userId} and type_id=3 and remark = #{productId}
+    </select>
+
+    <select id="selectByUserIdAndTypeId" parameterType="long" resultType="integer">
+        select remark from favorite where type_id = 3 and user_id = #{userId}
+    </select>
+
+    <select id="selectAllFavorite" resultType="integer" parameterType="long">
+        select remark from favorite where type_id = 2 and user_id = #{userId}
+    </select>
+</mapper>

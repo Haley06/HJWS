@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smallbell.modules.app.dao.ShopDao">
+
+    <resultMap id="BaseResultMap" type="com.smallbell.modules.app.entity.UserShoppingCartEntity">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="amount" property="amount" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_id, product_id, amount
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+
+
+    <select id="selectAll" resultType="com.smallbell.modules.app.entity.ProductEntity" parameterType="integer">
+        select id, name, subhead, category_id as categoryId, description, price, picture, comment_number as commentNumber from product where category_id = #{categoryId}
+    </select>
+
+    <select id="selectById" resultType="com.smallbell.modules.app.form.shop.ProductDetailsVo" parameterType="integer">
+        select product.id,
+               product.name,
+               product.subhead,
+               product.comment_number,
+               product_category.category_name,
+               product.description,
+               product.price,
+               product.picture
+        from product,
+             product_category
+        where product.id = #{id}
+          and product.category_id = product_category.id
+        order by product.id
+    </select>
+
+    <select id="selectCategory" resultType="com.smallbell.modules.app.entity.ProductCategoryEntity">
+        select id, category_name as categoryName,icon from product_category;
+    </select>
+
+    <insert id="insert" parameterType="com.smallbell.modules.app.entity.UserShoppingCartEntity">
+        insert into user_shopping_cart (id, user_id, product_id,
+                                        amount)
+        values (#{id}, #{userId}, #{productId},
+                #{amount})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.smallbell.modules.app.entity.UserShoppingCartEntity">
+        update user_shopping_cart
+        set user_id = #{userId},
+            product_id = #{productId},
+            amount = #{amount}
+        where id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="com.smallbell.modules.app.entity.ProductEntity">
+        select
+        id, name, subhead, category_id as categoryId, description, price
+        ,picture
+        from product
+        where id = #{productId}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="integer">
+        delete from user_shopping_cart
+    where id = #{id}
+    </delete>
+
+    <select id="selectShopCartByPirmaryKey" resultType="com.smallbell.modules.app.entity.UserShoppingCartEntity">
+        select
+        <include refid="Base_Column_List" />
+        from user_shopping_cart
+        where id = #{id}
+    </select>
+
+    <select id="selectAllCart" resultType="com.smallbell.modules.app.form.shop.ProductDetailsVo">
+        select product.id,
+               product.name,
+               product.subhead,
+               product_category.category_name,
+               product.description,
+               product.price,
+               product.picture,
+               user_shopping_cart.amount
+        from product,
+             product_category,
+             user_shopping_cart
+        where product.category_id = product_category.id
+          and user_shopping_cart.user_id=#{userId}
+          and user_shopping_cart.product_id = product.id
+        order by product.id
+    </select>
+
+    <select id="selectByExample" parameterType="com.smallbell.modules.app.form.shop.UserShoppingCartExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from user_shopping_cart
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+</mapper>
