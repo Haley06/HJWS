@@ -18,12 +18,12 @@ public class AliyunOSSConfigConstant {
     /**
      * AccessKey id
      */
-    public static final String AccessKey_ID = "LTAI5tMf2T9hfTpMLqp6zmrN";
+    public static final String AccessKey_ID = "mystery";
 
     /**
      * Access Key Secret
      */
-    public static final String AccessKey_Secret = "vcOnbkcG3Flvl9QAmy15n02PiyUkR6";
+    public static final String AccessKey_Secret = "mystery";
 
     /**
      * 仓库的文件夹
