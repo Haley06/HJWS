@@ -31,6 +31,7 @@ public interface ResultService extends IService<FatigueResultEntity> {
 
     Future<String[]> async(Long userId) throws InterruptedException;
 
+    R beforeAsync(Long timestamp,Long userId);
 
     int addRecord(Long userId, ResultForm form);
 

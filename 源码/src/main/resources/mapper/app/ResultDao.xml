@@ -73,6 +73,11 @@
         select is_allowed from monitore where monitored_id = #{userId}
     </select>
 
+    <select id="moodFeeling" resultType="com.smallbell.modules.app.entity.MoodEntity">
+        select id, user_id as userId, feeling, timestamp from mood where user_id = #{userId}
+            order by abs(#{timestamp} - `timestamp`) limit 1;
+    </select>
+
     <insert id="setMood" parameterType="com.smallbell.modules.app.entity.MoodEntity">
         insert into mood
         <trim prefix="(" suffix=")" suffixOverrides=",">

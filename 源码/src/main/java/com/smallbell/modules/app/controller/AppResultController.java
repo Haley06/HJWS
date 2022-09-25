@@ -9,6 +9,7 @@ import com.smallbell.modules.app.entity.UserEntity;
 import com.smallbell.modules.app.form.LoginForm;
 import com.smallbell.modules.app.form.ResultForm;
 import com.smallbell.modules.app.form.result.AlcoholForm;
+import com.smallbell.modules.app.form.result.BeforeAsyncForm;
 import com.smallbell.modules.app.form.result.MethodForm;
 import com.smallbell.modules.app.form.result.MoodForm;
 import com.smallbell.modules.app.service.FatigueResultService;
@@ -178,5 +179,15 @@ public class AppResultController {
             }
         }
         return R.ok().put("async",msg);
+    }
+
+    //@Login
+    @PostMapping("/fatigue/beforeAsync")
+    //@ApiOperation("返回长时间不目视前方结果")
+    public R beforeAsync(@RequestBody BeforeAsyncForm form){
+        //表单校验
+        ValidatorUtils.validateEntity(form);
+
+        return service.beforeAsync(form.getTimestamp(),form.getUserId());
     }
 }

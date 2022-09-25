@@ -15,6 +15,7 @@ import com.smallbell.modules.app.form.result.MoodForm;
 import com.smallbell.modules.app.form.result.MoodResult;
 import com.smallbell.modules.app.form.result.MoodVo;
 import com.smallbell.modules.app.service.ResultService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
@@ -255,5 +256,34 @@ public class ResultServiceImpl extends ServiceImpl<FatigueResultDao, FatigueResu
             }
         }
 
+    }
+
+    @Override
+    public R beforeAsync(Long timestamp, Long userId) {
+
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        LookAheadVo lookAheadVo = new LookAheadVo();
+        lookAheadVo.setStart(timestamp);
+        lookAheadVo.setEnd(timestamp);
+        lookAheadVo.setUserId(userId);
+        Integer integer = resultDao.selectLookAhead(lookAheadVo);
+        System.out.println(integer);
+        if (integer!=0)
+            arr.add(1);
+        else
+            arr.add(0);
+
+        Integer integer1 = resultDao.selectAlcohol(userId, timestamp, timestamp);
+        System.out.println(integer1);
+        if (integer1!=0)
+            arr.add(1);
+        else
+            arr.add(0);
+
+        MoodEntity entity = resultDao.moodFeeling(userId, timestamp);
+        arr.add(entity.getFeeling());
+
+        return R.ok().put("result",arr);
     }
 }

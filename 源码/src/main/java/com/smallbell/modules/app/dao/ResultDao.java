@@ -26,4 +26,6 @@ public interface ResultDao {
 
     Integer isAllowed(Long userId);
 
+    MoodEntity moodFeeling(Long userId,Long timestamp);
+
 }
