@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_pfld_new_style">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="用户id: 测试号"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/enter_ble"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:background="@drawable/bg_ble_btn"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="8dp"
+        android:text="硬件连接"
+        android:textColor="#f67474"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/pfld_container"
+        android:layout_width="228dp"
+        android:layout_height="228dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/msg_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/bg_msg_banner"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="34dp"
+        android:paddingVertical="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/pfld_container"
+        app:layout_constraintStart_toStartOf="@+id/pfld_container"
+        app:layout_constraintTop_toBottomOf="@+id/pfld_container">
+
+        <ImageView
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/ic_msg_banner"
+            app:tint="#E05F5F" />
+
+        <TextView
+            android:id="@+id/fati_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:text="正在连接服务器"
+            android:textColor="#E05F5F"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="@+id/msg_banner"
+        app:layout_constraintStart_toStartOf="@+id/msg_banner"
+        app:layout_constraintTop_toBottomOf="@+id/msg_banner">
+
+
+
+        <include
+            android:id="@+id/tips"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/link"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/alcohol"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/feeling"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/attention"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/heartbeat"
+            layout="@layout/item_pfld_state_bar"/>
+        <include
+            android:id="@+id/bodyTemperature"
+            layout="@layout/item_pfld_state_bar"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

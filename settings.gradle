@@ -1,0 +1,5 @@
+include ':plfd'
+include ':app'
+include ':bluetoothlibrary'
+rootProject.name = "RtmpDemo"
+include ':libpfld'
