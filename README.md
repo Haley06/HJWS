@@ -44,6 +44,19 @@ docker run -d -it -p55533:55533 ${镜像id}
 
 数据库既存储驾驶员异常驾驶行为信息，包括驾驶过程是否疲劳、心情是否消极、是否有酒驾、长时间不目视前方等，还存储用户个人信息、驾驶员好友、交友圈文章、等其他信息。 
 
+## run
+
+```cmd
+#直接把mysql地址和redis地址改到application.yml里
+
+chmod +777 start.sh
+
+./start.sh
+
+```
+
+
+
 # Web
 
 web基于Vue使用Element UI及vant UI渲染页面并通过Nginx部署上线，最终与安卓通过webview实现混合开发客户端。
